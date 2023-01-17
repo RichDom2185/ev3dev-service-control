@@ -44,14 +44,27 @@ static int main (string[] args)
             });
             main_menu.add_menu_item (webserver_toggle);
 
-            // Menu item to quit app
-            var quit_button = new Ev3devKit.Ui.MenuItem ("Quit Settings");
-            quit_button.button.pressed.connect (() => {
+             // Set up main layout
+             var main_vbox = new Box.vertical ();
+             var app_title = new Label ("Source Academy Settings") {
+                 border_bottom = 1
+             };
+             main_vbox.add (app_title);
+             main_vbox.add (main_menu);
+
+            // Button to quit app
+            var quit_button = new Button.with_label ("Quit Settings") {
+                padding = 0,
+                border = 0,
+                border_radius = 0,
+                border_top = 1
+            };
+            quit_button.pressed.connect (() => {
                 app.quit ();
             });
-            main_menu.add_menu_item (quit_button);
+            main_vbox.add (quit_button);
 
-            main_window.add (main_menu);
+            main_window.add (main_vbox);
             main_window.show ();
         });
 

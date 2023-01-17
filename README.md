@@ -2,6 +2,8 @@
 
 A GUI application to control running services on the EV3. Tailored to the [EV3-source](https://github.com/source-academy/ev3-source) image used in Source Academy@NUS.
 
+![Sample UI of the application running on an EV3](ui.png)
+
 ## Building
 
 ```bash
