@@ -6,6 +6,7 @@ static int main (string[] args)
 {
     try {
         var app = new Ev3devKit.ConsoleApp ();
+        //  Set initial checkbox statuses
         bool enable_ssh = Posix.system ("sudo systemctl status ssh | head -3 | tail -1 | grep running") == 0;
         bool enable_webserver = Posix.system ("test \"$(cat /srv/www/cgi-bin/.enable)\" -eq 1") == 0;
 
@@ -14,6 +15,8 @@ static int main (string[] args)
 
             var main_window = new Window ();
             var main_menu = new Ev3devKit.Ui.Menu ();
+
+            // Menu item to enable/disable SSH access
             var ssh_toggle = new CheckboxMenuItem ("SSH");
             ssh_toggle.checkbox.checked = enable_ssh;
             ssh_toggle.button.pressed.connect (() => {
@@ -27,6 +30,7 @@ static int main (string[] args)
             });
             main_menu.add_menu_item (ssh_toggle);
 
+            // Menu item to enable/disable webserver
             var webserver_toggle = new CheckboxMenuItem ("Webserver");
             webserver_toggle.checkbox.checked = enable_webserver;
             webserver_toggle.button.pressed.connect (() => {
