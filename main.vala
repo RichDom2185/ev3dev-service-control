@@ -44,6 +44,13 @@ static int main (string[] args)
             });
             main_menu.add_menu_item (webserver_toggle);
 
+            // Menu item to quit app
+            var quit_button = new Ev3devKit.Ui.MenuItem ("Quit Settings");
+            quit_button.button.pressed.connect (() => {
+                app.quit ();
+            });
+            main_menu.add_menu_item (quit_button);
+
             main_window.add (main_menu);
             main_window.show ();
         });
