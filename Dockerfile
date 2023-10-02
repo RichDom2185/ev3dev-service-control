@@ -1,4 +1,4 @@
-FROM ev3dev/debian-stretch-armel-cross
+FROM --platform=linux/amd64 ev3dev/debian-stretch-armel-cross
 
 # Fix for Debian Stretch end-of-life
 # Adapted from https://stackoverflow.com/a/76095392
