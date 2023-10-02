@@ -6,6 +6,7 @@ on:
       - main
 
 env:
+  IMAGE_NAME: "compiler"
   INPUT_FILENAME: "main.vala"
   OUTPUT_FILENAME: "main"
 
@@ -16,6 +17,6 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
       - name: Build Docker image
-        run: docker build -t ${{ github.repository }} .
+        run: docker build -t ${{ env.IMAGE_NAME }} .
       - name: Compile binary
-        run: docker run --rm -v $PWD:/app -w /app -u 0:0 ${{ github.repository }} -o ${{ env.OUTPUT_FILENAME }} ${{ env.INPUT_FILENAME }}
+        run: docker run --rm -v $PWD:/app -w /app -u 0:0 ${{ env.IMAGE_NAME }} -o ${{ env.OUTPUT_FILENAME }} ${{ env.INPUT_FILENAME }}
