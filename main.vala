@@ -15,6 +15,9 @@ string string_random(int length = 6, string charset = "ABCDEFGHIJKLMNOPQRSTUVWXY
     return random;
 }
 
+const string BOT_SECRET_FILE = "/var/lib/sling/secret_b62";
+const string BOT_QRCODE_FILE = "/var/lib/sling/secret_image.png";
+
 static int main (string[] args)
 {
     try {
@@ -28,6 +31,17 @@ static int main (string[] args)
 
             var main_window = new Window ();
             var main_menu = new Ev3devKit.Ui.Menu ();
+
+            var token_reset = new Ev3devKit.Ui.MenuItem ("Invalidate Bot Token");
+            token_reset.button.pressed.connect(() => {
+                var dialog = new MessageDialog ("Token Reset", "Token regenerated! Check QR Code to view and add to Source Academy.");
+                // TODO: Don't use shell commands
+                Posix.system ("rm -f " + BOT_QRCODE_FILE);
+                Posix.system ("rm -f " + BOT_SECRET_FILE);
+                Posix.system ("sudo systemctl restart sling");
+                dialog.show();
+            });
+            main_menu.add_menu_item (token_reset);
 
             // Menu item to enable/disable SSH access
             var ssh_toggle = new CheckboxMenuItem ("SSH");
