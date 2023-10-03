@@ -12,19 +12,15 @@ env:
 
 jobs:
   ci:
-    strategy:
-      matrix:
-        os:
-          - ubuntu-22.04
-          - ubuntu-20.04
-          - windows-2022
-    runs-on: ${{ matrix.os }}
+    runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
-      - name: Check platform
-        run: uname -m
-      - name: Build Docker image
-        run: docker build --platform linux/amd64 --progress=plain -t ${{ env.IMAGE_NAME }} .
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+      - name: Build and push
+        uses: docker/build-push-action@v5
+        with:
+          tags: ${{ env.IMAGE_NAME }}
       # - name: Compile binary
       #   run: docker run --rm -v $PWD:/app -w /app -u 0:0 ${{ env.IMAGE_NAME }} -o ${{ env.OUTPUT_FILENAME }} ${{ env.INPUT_FILENAME }}
