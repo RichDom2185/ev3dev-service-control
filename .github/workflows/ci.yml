@@ -16,6 +16,8 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
+      - name: Check platform
+        run: uname -m
       - name: Build Docker image
         run: docker build --platform linux/amd64 --progress=plain -t ${{ env.IMAGE_NAME }} .
       - name: Compile binary
