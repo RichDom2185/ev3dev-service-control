@@ -17,6 +17,6 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
       - name: Build Docker image
-        run: docker build --progress=plain -t ${{ env.IMAGE_NAME }} .
+        run: docker build --platform linux/amd64 --progress=plain -t ${{ env.IMAGE_NAME }} .
       - name: Compile binary
         run: docker run --rm -v $PWD:/app -w /app -u 0:0 ${{ env.IMAGE_NAME }} -o ${{ env.OUTPUT_FILENAME }} ${{ env.INPUT_FILENAME }}
