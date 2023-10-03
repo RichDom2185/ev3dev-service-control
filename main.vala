@@ -2,6 +2,19 @@
 // valac --pkg linux --pkg posix --pkg ev3devkit-0.5 --pkg gio-unix-2.0 --pkg grx-3.0 --pkg glib-2.0 --pkg gudev-1.0 main.vala -o bin
 using Ev3devKit.Ui;
 
+// Adapted from https://www.kuikie.com/snippet/79/vala-generate-random-string
+string string_random(int length = 6, string charset = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890"){
+    string random = "";
+
+    for(int i=0;i<length;i++){
+        int random_index = Random.int_range(0,charset.length);
+        string ch = charset.get_char(charset.index_of_nth_char(random_index)).to_string();
+        random += ch;
+    }
+	
+    return random;
+}
+
 static int main (string[] args)
 {
     try {
@@ -29,6 +42,18 @@ static int main (string[] args)
                 ssh_toggle.checkbox.checked = enable_ssh;
             });
             main_menu.add_menu_item (ssh_toggle);
+
+            var ssh_reset = new Ev3devKit.Ui.MenuItem ("Reset SSH Password");
+            ssh_reset.button.pressed.connect(() => {
+                var random_string = string_random ();
+                var dialog = new MessageDialog ("Password Reset", "Username: robot\nNew password: " + random_string);
+                // TODO: Refactor ugly code
+                var command = """echo "%s
+%s" | sudo passwd robot""".printf (random_string, random_string);
+                Posix.system (command);
+                dialog.show();
+            });
+            main_menu.add_menu_item (ssh_reset);
 
             // Menu item to enable/disable webserver
             var webserver_toggle = new CheckboxMenuItem ("Webserver");
