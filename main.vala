@@ -44,7 +44,7 @@ static int main (string[] args)
             main_menu.add_menu_item (token_reset);
 
             // Menu item to enable/disable SSH access
-            var ssh_toggle = new CheckboxMenuItem ("SSH");
+            var ssh_toggle = new CheckboxMenuItem ("Enable SSH");
             ssh_toggle.checkbox.checked = enable_ssh;
             ssh_toggle.button.pressed.connect (() => {
                 enable_ssh = !enable_ssh;
@@ -70,7 +70,7 @@ static int main (string[] args)
             main_menu.add_menu_item (ssh_reset);
 
             // Menu item to enable/disable webserver
-            var webserver_toggle = new CheckboxMenuItem ("Webserver");
+            var webserver_toggle = new CheckboxMenuItem ("Enable Webserver");
             webserver_toggle.checkbox.checked = enable_webserver;
             webserver_toggle.button.pressed.connect (() => {
                 enable_webserver = !enable_webserver;
