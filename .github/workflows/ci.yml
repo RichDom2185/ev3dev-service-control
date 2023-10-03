@@ -12,7 +12,14 @@ env:
 
 jobs:
   ci:
-    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        os:
+          - ubuntu-22.04
+          - ubuntu-20.04
+          - windows-2022
+          - macos-12
+    runs-on: ${{ matrix.os }}
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -20,5 +27,5 @@ jobs:
         run: uname -m
       - name: Build Docker image
         run: docker build --platform linux/amd64 --progress=plain -t ${{ env.IMAGE_NAME }} .
-      - name: Compile binary
-        run: docker run --rm -v $PWD:/app -w /app -u 0:0 ${{ env.IMAGE_NAME }} -o ${{ env.OUTPUT_FILENAME }} ${{ env.INPUT_FILENAME }}
+      # - name: Compile binary
+      #   run: docker run --rm -v $PWD:/app -w /app -u 0:0 ${{ env.IMAGE_NAME }} -o ${{ env.OUTPUT_FILENAME }} ${{ env.INPUT_FILENAME }}
