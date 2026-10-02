@@ -17,6 +17,11 @@ string string_random(int length = 6, string charset = "ABCDEFGHIJKLMNOPQRSTUVWXY
 
 const string BOT_SECRET_FILE = "/var/lib/sling/secret_b62";
 const string BOT_QRCODE_FILE = "/var/lib/sling/secret_image.png";
+// Python runs as a second, independent sling instance (own identity, own secret files, own
+// systemd units) alongside the Source one above - see source-academy/ev3-source#31. Without these,
+// "Invalidate Bot Token" only ever reset the Source pipeline's secret.
+const string PYTHON_BOT_SECRET_FILE = "/var/lib/sling-python/secret_b62";
+const string PYTHON_BOT_QRCODE_FILE = "/var/lib/sling-python/secret_image.png";
 
 static int main (string[] args)
 {
@@ -38,7 +43,11 @@ static int main (string[] args)
                 // TODO: Don't use shell commands
                 Posix.system ("rm -f " + BOT_QRCODE_FILE);
                 Posix.system ("rm -f " + BOT_SECRET_FILE);
+                Posix.system ("rm -f " + PYTHON_BOT_QRCODE_FILE);
+                Posix.system ("rm -f " + PYTHON_BOT_SECRET_FILE);
                 Posix.system ("sudo systemctl restart sling");
+                Posix.system ("sudo systemctl restart sling-python");
+                Posix.system ("sudo systemctl restart sling-python-stg");
                 dialog.show();
             });
             main_menu.add_menu_item (token_reset);
